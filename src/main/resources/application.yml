@@ -3,3 +3,12 @@ server:
 
 spring:
   name: backenddevchallenge
+
+
+
+logging:
+  level:
+    org:
+      springframework.web: "trace"
+      apache.hc.client5.http: "trace"
+    com.limepay.backenddevchallenge: "debug"
