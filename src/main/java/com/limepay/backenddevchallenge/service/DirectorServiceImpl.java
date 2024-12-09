@@ -23,9 +23,8 @@ public class DirectorServiceImpl implements DirectorService {
 
     @Cacheable(value = "directorsCache", key = "#threshold")
     public List<String> getDirectors(int threshold){
-        List<Movie> movies = null;
         MovieRecord firstRecord = getMovies(1);
-        movies = new ArrayList<>(firstRecord.data());
+        List<Movie> movies = new ArrayList<>(firstRecord.data());
         log.debug("first record: {}", firstRecord);
         int page = firstRecord.total_pages();
         log.debug("totalPages: {}", page);
@@ -41,10 +40,11 @@ public class DirectorServiceImpl implements DirectorService {
         List<String> directors = new ArrayList<>();
         for(Map.Entry<String, Set<String>> set: directorAndMovies.entrySet()){
             log.debug("key :{}, value:{}", set.getKey(), set.getValue());
-            if(set.getValue().size() == threshold){
+            if(set.getValue().size() > threshold){
                 directors.add(set.getKey());
             }
         }
+        Collections.sort(directors);
         return directors;
     }
 
