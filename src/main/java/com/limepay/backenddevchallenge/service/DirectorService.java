@@ -3,6 +3,7 @@ package com.limepay.backenddevchallenge.service;
 import com.limepay.backenddevchallenge.dto.Movie;
 import com.limepay.backenddevchallenge.dto.MovieRecord;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ import java.util.stream.Stream;
 @Slf4j
 @Service
 public class DirectorService {
+    @Value("${limepay.movies.url}")
+    private String MOVIES_URL;
+
     private Map<String, Set<String>> tempMap = new HashMap<>();
 
     @Cacheable(value = "directorsCache", key = "#threshold")
@@ -47,7 +51,7 @@ public class DirectorService {
     MovieRecord getMovies(final int page){
         log.debug("getting page#: {}", page);
         return RestClient.create().get()
-                .uri("https://wiremock.dev.eroninternational.com/api/movies/search?page={page}", page)
+                .uri(MOVIES_URL, page)
                 .retrieve()
                 .body(MovieRecord.class);
     }

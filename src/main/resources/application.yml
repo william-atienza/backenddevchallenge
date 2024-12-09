@@ -4,7 +4,9 @@ server:
 spring:
   name: backenddevchallenge
 
-
+limepay:
+  movies.url: "https://wiremock.dev.eroninternational.com/api/movies/search?page={page}"
+  cache.expiry: 60 #in minutes
 
 logging:
   level:
