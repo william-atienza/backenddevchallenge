@@ -3,6 +3,8 @@ package com.limepay.backenddevchallenge.service;
 import com.limepay.backenddevchallenge.dto.Movie;
 import com.limepay.backenddevchallenge.dto.MovieRecord;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -10,13 +12,14 @@ import org.springframework.web.client.RestClient;
 
 import java.util.*;
 
-@Slf4j
 @Service
 public class DirectorServiceImpl implements DirectorService {
+    Logger log = LoggerFactory.getLogger(DirectorServiceImpl.class);
+
     @Value("${limepay.movies.url}")
     private String MOVIES_URL;
 
-    private Map<String, Set<String>> tempMap = new HashMap<>();
+    private Map<String, Set<String>> directorAndMovies = new HashMap<>();
 
     @Cacheable(value = "directorsCache", key = "#threshold")
     public List<String> getDirectors(int threshold){
@@ -34,9 +37,9 @@ public class DirectorServiceImpl implements DirectorService {
         }
 
         mapDirectorAndMovies(movies);
-        log.debug("tempMap: {}", tempMap);
+        log.debug("directorAndMovies: {}", directorAndMovies);
         List<String> directors = new ArrayList<>();
-        for(Map.Entry<String, Set<String>> set: tempMap.entrySet()){
+        for(Map.Entry<String, Set<String>> set: directorAndMovies.entrySet()){
             log.debug("key :{}, value:{}", set.getKey(), set.getValue());
             if(set.getValue().size() == threshold){
                 directors.add(set.getKey());
@@ -55,13 +58,13 @@ public class DirectorServiceImpl implements DirectorService {
 
     void mapDirectorAndMovies(List<Movie> movies){
         for(Movie movie: movies){
-            Set<String> set = tempMap.get(movie.director());
+            Set<String> set = directorAndMovies.get(movie.director());
             if(set != null){
                 set.add(movie.title());
             }else{
                 Set<String> newSet = new HashSet();
                 newSet.add(movie.title());
-                tempMap.put(movie.director(), newSet);
+                directorAndMovies.put(movie.director(), newSet);
             }
         }
     }
