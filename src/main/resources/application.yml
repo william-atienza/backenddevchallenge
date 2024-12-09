@@ -9,8 +9,9 @@ limepay:
   cache.expiry: 60 #in minutes
 
 logging:
+  file.path: log/
   level:
     org:
-      springframework.web: "trace"
-      apache.hc.client5.http: "trace"
-    com.limepay.backenddevchallenge: "debug"
+      springframework.web: "ERROR"
+      apache.hc.client5.http: "ERROR"
+    com.limepay.backenddevchallenge: "INFO"
