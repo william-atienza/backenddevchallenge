@@ -84,4 +84,5 @@ best practices?
 1. More unit testing needed. Took me a lot of time already to fix the mocking of service class used in MainController.java. I used my old Spring Boot applications (v2) as reference but seems like the Spring Boot 3 is different now.
 2. Need to add API contract testing to be able to catch breaking changes in the JSON schema. 
 3. I only added a simple logging configuration as you can see in application.yaml (line 11). In prod, we usually need more complicated configurations specially for rolling logs.
-4. I have not code coverage my implement
+4. I have not code coveraged my implementation.
+5. Need to do some refactoring.
