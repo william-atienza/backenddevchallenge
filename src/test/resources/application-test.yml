@@ -1,0 +1,17 @@
+server:
+  port: 8085
+
+spring:
+  name: backenddevchallenge
+
+limepay:
+  movies.url: "https://wiremock.dev.eroninternational.com/api/movies/search?page={page}"
+  cache.expiry: 60 #in minutes
+
+logging:
+  file.path: log/
+  level:
+    org:
+      springframework.web: "ERROR"
+      apache.hc.client5.http: "ERROR"
+    com.limepay.backenddevchallenge: "INFO"
